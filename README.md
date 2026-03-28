@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# GOVERN·AI – AI Governance Audit Readiness Scorecard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, offline-first React application designed to help organisations assess their AI governance maturity against key global regulations including the **EU AI Act**, **India DPDP Act 2023**, and the **RBI IT Governance Framework**.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Comprehensive Assessment**: 32 questions covering 7 critical governance domains (AI Inventory, Data Governance, Human Oversight, etc.).
+- **Dynamic Risk Scoring**: Real-time scoring out of 200 points, weighted by regulatory criticality.
+- **Risk Gap Identification**: Automatically highlights the top high-risk compliance gaps and provides actionable remediation guidance.
+- **Visual Results**: Beautiful, animated score gauge and per-domain breakdown bars.
+- **Board-Ready PDF Reports**: Generates a professional 5-page PDF report entirely client-side using native jsPDF drawing APIs (no server required, ensuring complete data privacy).
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
+- **Frontend**: React (Create React App), Custom Hooks
+- **Styling**: Tailwind CSS v3 (Custom dark mode aesthetic)
+- **PDF Generation**: `jspdf` (100% client-side, programmatic rendering)
+- **Data**: Static JSON question bank
+
+## Getting Started
+
+First, install the dependencies:
+```bash
+npm install
+```
+
+Then, run the development server:
+```bash
+npm start
+```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Privacy & Security
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This application is designed as a **self-assessment tool**. All data processing, score calculation, and PDF report generation happens entirely within the user's browser. No assessment data is ever sent to an external server.
