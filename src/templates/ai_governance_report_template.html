@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Governance Audit Readiness Report — Template</title>
+<style>
+  /* ── Base ─────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    color: #1a1a1a;
+    background: #f0f0f0;
+    padding: 32px;
+  }
+  .page {
+    width: 794px;
+    background: #fff;
+    margin: 0 auto 40px;
+    padding: 56px 64px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    border-radius: 4px;
+  }
+
+  /* ── Cover page ───────────────────────────────────────────── */
+  .cover { text-align: center; padding: 80px 0; }
+  .cover-logo {
+    display: inline-block;
+    background: #0F6E56;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 8px 18px;
+    border-radius: 4px;
+    margin-bottom: 48px;
+  }
+  .cover-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0F6E56;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 48px;
+  }
+  .cover-meta {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    background: #f7f7f5;
+    border: 1px solid #e0e0da;
+    border-radius: 6px;
+    padding: 20px 28px;
+    margin-bottom: 48px;
+    min-width: 320px;
+  }
+  .cover-meta-row { font-size: 12px; color: #444; }
+  .cover-meta-row strong { color: #111; }
+
+  /* Score badge on cover */
+  .cover-score-wrap { display: flex; justify-content: center; gap: 32px; margin-bottom: 32px; }
+  .score-badge {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    border: 5px solid #0F6E56;
+    background: #fff;
+  }
+  .score-badge .score-num { font-size: 32px; font-weight: 700; color: #0F6E56; line-height: 1; }
+  .score-badge .score-label { font-size: 10px; color: #888; margin-top: 2px; }
+  .score-verdict {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .verdict-compliant    { background: #E1F5EE; color: #0F6E56; }
+  .verdict-partial      { background: #FAEEDA; color: #854F0B; }
+  .verdict-emerging     { background: #FAECE7; color: #993C1D; }
+  .verdict-risk         { background: #FCEBEB; color: #A32D2D; }
+
+  .cover-disclaimer {
+    font-size: 10px;
+    color: #aaa;
+    border-top: 1px solid #e8e8e4;
+    padding-top: 24px;
+    margin-top: 16px;
+  }
+
+  /* ── Section header ───────────────────────────────────────── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #0F6E56;
+    margin-bottom: 6px;
+  }
+  .page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+  }
+  .page-subtitle {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #0F6E56;
+  }
+
+  /* ── Summary score table ──────────────────────────────────── */
+  .score-summary { display: flex; gap: 16px; margin-bottom: 28px; }
+  .score-card {
+    flex: 1;
+    border: 1px solid #e0e0da;
+    border-radius: 6px;
+    padding: 14px;
+    text-align: center;
+  }
+  .score-card .card-num { font-size: 24px; font-weight: 700; margin-bottom: 2px; }
+  .score-card .card-label { font-size: 10px; color: #777; }
+  .score-card.main { border-color: #0F6E56; background: #f0faf6; }
+  .score-card.main .card-num { color: #0F6E56; }
+
+  /* ── Progress bars ────────────────────────────────────────── */
+  .section-scores { margin-bottom: 28px; }
+  .section-scores h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #222; }
+  .score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .score-row-label { font-size: 11px; color: #444; width: 200px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .fill-green  { background: #1D9E75; }
+  .fill-amber  { background: #EF9F27; }
+  .fill-red    { background: #E24B4A; }
+  .score-row-pct { font-size: 11px; font-weight: 700; color: #333; width: 36px; text-align: right; }
+
+  /* ── Risk gap table ───────────────────────────────────────── */
+  .gap-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+  .gap-table th {
+    font-size: 10px;
+    font-weight: 700;
+    text-align: left;
+    color: #777;
+    letter-spacing: 0.5px;
+    padding: 6px 10px;
+    background: #f7f7f5;
+    border-bottom: 1px solid #e0e0da;
+  }
+  .gap-table td {
+    font-size: 11px;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0ea;
+    vertical-align: top;
+    color: #333;
+  }
+  .gap-table tr:last-child td { border-bottom: none; }
+  .risk-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .risk-high { background: #FCEBEB; color: #A32D2D; }
+  .risk-med  { background: #FAEEDA; color: #854F0B; }
+  .risk-low  { background: #E1F5EE; color: #0F6E56; }
+
+  .reg-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: 600;
+    margin-right: 3px;
+    margin-bottom: 2px;
+  }
+  .reg-rbi  { background: #E6F1FB; color: #185FA5; }
+  .reg-eu   { background: #EEEDFE; color: #3C3489; }
+  .reg-dpdp { background: #EAF3DE; color: #3B6D11; }
+
+  /* ── Action items ─────────────────────────────────────────── */
+  .action-list { list-style: none; margin-bottom: 28px; }
+  .action-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid #e8e8e4;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    align-items: flex-start;
+  }
+  .action-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #0F6E56;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .action-body {}
+  .action-title { font-size: 12px; font-weight: 700; color: #111; margin-bottom: 2px; }
+  .action-desc  { font-size: 11px; color: #555; line-height: 1.5; }
+  .action-meta  { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+  .action-owner { font-size: 10px; background: #f7f7f5; color: #555; border: 1px solid #e0e0da; padding: 1px 7px; border-radius: 10px; }
+  .action-timeline { font-size: 10px; background: #f7f7f5; color: #555; border: 1px solid #e0e0da; padding: 1px 7px; border-radius: 10px; }
+
+  /* ── Detail section (per-section breakdown) ───────────────── */
+  .detail-section { margin-bottom: 24px; }
+  .detail-section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #f7f7f5;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .detail-section-title { font-size: 12px; font-weight: 700; color: #222; flex: 1; }
+  .detail-section-score { font-size: 12px; font-weight: 700; }
+  .q-row-detail {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    border-left: 3px solid #e0e0da;
+    margin-bottom: 6px;
+    align-items: flex-start;
+  }
+  .q-row-detail.pass  { border-left-color: #1D9E75; }
+  .q-row-detail.fail  { border-left-color: #E24B4A; }
+  .q-row-detail.part  { border-left-color: #EF9F27; }
+  .q-row-text  { flex: 1; font-size: 11px; color: #333; line-height: 1.4; }
+  .q-row-ans   { font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .ans-pass    { color: #0F6E56; }
+  .ans-fail    { color: #A32D2D; }
+  .ans-part    { color: #854F0B; }
+
+  /* ── Attestation block ────────────────────────────────────── */
+  .attestation {
+    border: 1px solid #e0e0da;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .attestation h3 { font-size: 12px; font-weight: 700; margin-bottom: 10px; color: #222; }
+  .sig-row { display: flex; gap: 40px; margin-top: 20px; }
+  .sig-block { flex: 1; }
+  .sig-line { border-bottom: 1px solid #aaa; height: 32px; margin-bottom: 4px; }
+  .sig-label { font-size: 10px; color: #888; }
+
+  /* ── Footer ───────────────────────────────────────────────── */
+  .page-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 12px;
+    border-top: 1px solid #e8e8e4;
+    font-size: 9px;
+    color: #bbb;
+  }
+
+  /* ── Print note ───────────────────────────────────────────── */
+  .print-note {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="print-note">
+  📄 PDF REPORT TEMPLATE — Visual spec for jsPDF implementation. Each .page block = one PDF page.
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 1 — COVER
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover">
+    <div class="cover-logo">GOVERN·AI</div>
+
+    <div class="cover-title">AI Governance Audit<br>Readiness Report</div>
+    <div class="cover-sub">Assessed against RBI IT Governance Framework, EU AI Act, and India DPDP Act 2023</div>
+
+    <div style="display:flex; justify-content:center; margin-bottom:28px;">
+      <div class="cover-meta">
+        <div class="cover-meta-row"><strong>Company:</strong> Acme Fintech Pvt. Ltd.</div>
+        <div class="cover-meta-row"><strong>Industry:</strong> Fintech — Lending</div>
+        <div class="cover-meta-row"><strong>Assessed by:</strong> Head of GRC</div>
+        <div class="cover-meta-row"><strong>Date:</strong> March 2026</div>
+        <div class="cover-meta-row"><strong>Report ID:</strong> AGR-2026-001</div>
+      </div>
+    </div>
+
+    <div class="cover-score-wrap">
+      <div style="text-align:center;">
+        <div class="score-badge">
+          <span class="score-num">67<span style="font-size:14px;">%</span></span>
+          <span class="score-label">134 / 200 pts</span>
+        </div>
+        <div style="height:12px;"></div>
+        <span class="score-verdict verdict-partial">Partially Compliant</span>
+      </div>
+    </div>
+
+    <div style="font-size:12px; color:#555; max-width:440px; margin:0 auto 32px; line-height:1.6;">
+      Governance foundations exist — critical gaps in data governance and incident management require remediation before regulatory inspection readiness can be claimed.
+    </div>
+
+    <div class="cover-disclaimer">
+      This report was generated using the AI Governance Readiness Scorecard. It is an internal self-assessment tool and does not constitute a formal regulatory audit or legal opinion.
+      Questions are mapped to RBI IT Governance Circular 2023, EU AI Act (Regulation 2024/1689), and India DPDP Act 2023.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>GOVERN·AI — AI Governance Scorecard</span>
+    <span>Confidential — Internal Use Only</span>
+    <span>Page 1</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 2 — EXECUTIVE SUMMARY
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-label">Executive Summary</div>
+  <div class="page-title">Assessment Overview</div>
+  <div class="page-subtitle">High-level scores across all 7 governance domains</div>
+
+  <!-- Score cards -->
+  <div class="score-summary">
+    <div class="score-card main">
+      <div class="card-num">67%</div>
+      <div class="card-label">Overall compliance score</div>
+    </div>
+    <div class="score-card">
+      <div class="card-num" style="color:#E24B4A;">8</div>
+      <div class="card-label">Critical gaps (high risk)</div>
+    </div>
+    <div class="score-card">
+      <div class="card-num" style="color:#EF9F27;">6</div>
+      <div class="card-label">Medium gaps</div>
+    </div>
+    <div class="score-card">
+      <div class="card-num" style="color:#1D9E75;">18</div>
+      <div class="card-label">Controls in place</div>
+    </div>
+  </div>
+
+  <!-- Section-by-section bars -->
+  <div class="section-scores">
+    <h3>Score by governance domain</h3>
+
+    <div class="score-row">
+      <div class="score-row-label">AI Inventory &amp; Discovery</div>
+      <div class="bar-track"><div class="bar-fill fill-amber" style="width:55%;"></div></div>
+      <div class="score-row-pct">55%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-row-label">Data Governance &amp; Privacy</div>
+      <div class="bar-track"><div class="bar-fill fill-red" style="width:40%;"></div></div>
+      <div class="score-row-pct">40%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-row-label">Human Oversight &amp; Accountability</div>
+      <div class="bar-track"><div class="bar-fill fill-green" style="width:72%;"></div></div>
+      <div class="score-row-pct">72%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-row-label">Employee Awareness &amp; Training</div>
+      <div class="bar-track"><div class="bar-fill fill-amber" style="width:60%;"></div></div>
+      <div class="score-row-pct">60%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-row-label">Vendor &amp; Third-party AI Risk</div>
+      <div class="bar-track"><div class="bar-fill fill-red" style="width:38%;"></div></div>
+      <div class="score-row-pct">38%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-row-label">Incident &amp; Risk Management</div>
+      <div class="bar-track"><div class="bar-fill fill-amber" style="width:62%;"></div></div>
+      <div class="score-row-pct">62%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-row-label">Transparency &amp; Explainability</div>
+      <div class="bar-track"><div class="bar-fill fill-amber" style="width:50%;"></div></div>
+      <div class="score-row-pct">50%</div>
+    </div>
+  </div>
+
+  <!-- Risk gap table -->
+  <h3 style="font-size:13px; font-weight:700; margin-bottom:10px; color:#222;">Top 5 critical gaps</h3>
+  <table class="gap-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Gap</th>
+        <th>Risk</th>
+        <th>Regulation</th>
+        <th>Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700; color:#E24B4A;">1</td>
+        <td>Customer PII pasted into external AI tools with no technical controls</td>
+        <td><span class="risk-pill risk-high">High</span></td>
+        <td>
+          <span class="reg-tag reg-dpdp">DPDP S.4</span>
+          <span class="reg-tag reg-rbi">RBI Data</span>
+        </td>
+        <td style="color:#A32D2D; font-weight:600;">Regulatory breach</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700; color:#E24B4A;">2</td>
+        <td>No vendor contracts reviewed for AI sub-processors or data training clauses</td>
+        <td><span class="risk-pill risk-high">High</span></td>
+        <td>
+          <span class="reg-tag reg-dpdp">DPDP S.8</span>
+          <span class="reg-tag reg-eu">EU Art. 25</span>
+        </td>
+        <td style="color:#A32D2D; font-weight:600;">Contractual exposure</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700; color:#E24B4A;">3</td>
+        <td>No documented AI incident response process</td>
+        <td><span class="risk-pill risk-high">High</span></td>
+        <td>
+          <span class="reg-tag reg-eu">EU Art. 73</span>
+          <span class="reg-tag reg-rbi">RBI Incident</span>
+        </td>
+        <td style="color:#A32D2D; font-weight:600;">Enforcement risk</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700; color:#E24B4A;">4</td>
+        <td>No AI tool approval process — employees can use any tool without review</td>
+        <td><span class="risk-pill risk-high">High</span></td>
+        <td>
+          <span class="reg-tag reg-rbi">RBI Procurement</span>
+          <span class="reg-tag reg-eu">EU Art. 9</span>
+        </td>
+        <td style="color:#A32D2D; font-weight:600;">Shadow AI proliferation</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700; color:#E24B4A;">5</td>
+        <td>Cannot produce AI usage report for regulator within 1 week</td>
+        <td><span class="risk-pill risk-high">High</span></td>
+        <td>
+          <span class="reg-tag reg-rbi">RBI Inspection</span>
+          <span class="reg-tag reg-eu">EU Art. 19</span>
+        </td>
+        <td style="color:#A32D2D; font-weight:600;">Audit failure</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span>GOVERN·AI — AI Governance Scorecard</span>
+    <span>Confidential — Internal Use Only</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 3 — ACTION PLAN
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-label">Remediation</div>
+  <div class="page-title">Prioritised Action Plan</div>
+  <div class="page-subtitle">Top actions to close the highest-risk gaps, ordered by regulatory urgency</div>
+
+  <ul class="action-list">
+    <li class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <div class="action-title">Implement DLP controls blocking PII upload to external AI tools</div>
+        <div class="action-desc">Configure endpoint DLP (Microsoft Purview or equivalent) to block paste/upload of fields matching Aadhaar, PAN, phone number patterns to known AI tool domains. Apply to all corporate devices.</div>
+        <div class="action-meta">
+          <span class="action-owner">Owner: IT / InfoSec</span>
+          <span class="action-timeline">Timeline: 30 days</span>
+          <span class="reg-tag reg-dpdp">DPDP S.4</span>
+          <span class="reg-tag reg-rbi">RBI IS Policy</span>
+        </div>
+      </div>
+    </li>
+    <li class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <div class="action-title">Audit and renegotiate AI vendor contracts</div>
+        <div class="action-desc">Review all SaaS vendor agreements for AI sub-processor disclosure and data training clauses. Addend contracts lacking explicit no-training provisions. Prioritise vendors processing customer financial data.</div>
+        <div class="action-meta">
+          <span class="action-owner">Owner: Legal / Procurement</span>
+          <span class="action-timeline">Timeline: 45 days</span>
+          <span class="reg-tag reg-dpdp">DPDP S.8</span>
+          <span class="reg-tag reg-eu">EU Art. 25</span>
+        </div>
+      </div>
+    </li>
+    <li class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <div class="action-title">Create and publish an AI tool approved list with formal approval process</div>
+        <div class="action-desc">Document all currently approved AI tools. Create a lightweight intake form for new tool requests (5 questions, GRC sign-off within 5 days). Communicate the list to all staff via email and intranet.</div>
+        <div class="action-meta">
+          <span class="action-owner">Owner: GRC / IT</span>
+          <span class="action-timeline">Timeline: 21 days</span>
+          <span class="reg-tag reg-rbi">RBI Policy</span>
+          <span class="reg-tag reg-eu">EU Art. 26</span>
+        </div>
+      </div>
+    </li>
+    <li class="action-item">
+      <div class="action-num">4</div>
+      <div class="action-body">
+        <div class="action-title">Draft and test an AI incident response runbook</div>
+        <div class="action-desc">Define what constitutes an AI incident (data leak via prompt, biased decision, vendor breach). Set escalation paths, notification timelines (15-day EU AI Act window), and communication templates. Run a tabletop exercise.</div>
+        <div class="action-meta">
+          <span class="action-owner">Owner: GRC / CISO</span>
+          <span class="action-timeline">Timeline: 60 days</span>
+          <span class="reg-tag reg-eu">EU Art. 73</span>
+          <span class="reg-tag reg-rbi">RBI Incident</span>
+        </div>
+      </div>
+    </li>
+    <li class="action-item">
+      <div class="action-num">5</div>
+      <div class="action-body">
+        <div class="action-title">Establish quarterly AI governance reporting to senior leadership</div>
+        <div class="action-desc">Create a one-page AI risk dashboard (tool count, incidents, compliance score trend) for quarterly board pack. Designate an AI Governance Lead who owns the report and attends relevant risk committee meetings.</div>
+        <div class="action-meta">
+          <span class="action-owner">Owner: GRC Lead / CRO</span>
+          <span class="action-timeline">Timeline: 90 days</span>
+          <span class="reg-tag reg-eu">EU Art. 26</span>
+          <span class="reg-tag reg-rbi">RBI Governance</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="page-footer">
+    <span>GOVERN·AI — AI Governance Scorecard</span>
+    <span>Confidential — Internal Use Only</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 4 — DETAILED Q&A BREAKDOWN
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-label">Detail</div>
+  <div class="page-title">Question-level Responses</div>
+  <div class="page-subtitle">Full answer log — AI Inventory &amp; Discovery · Data Governance (sample)</div>
+
+  <!-- Section 1 detail -->
+  <div class="detail-section">
+    <div class="detail-section-header">
+      <div class="detail-section-title">AI Inventory &amp; Discovery</div>
+      <span class="risk-pill risk-amber" style="background:#FAEEDA; color:#854F0B;">55% · 22/40 pts</span>
+    </div>
+
+    <div class="q-row-detail pass">
+      <div class="q-row-text"><strong>Q1.</strong> Does your company maintain a documented register of all AI tools?</div>
+      <div class="q-row-ans ans-pass">✓ In progress</div>
+    </div>
+    <div class="q-row-detail fail">
+      <div class="q-row-text"><strong>Q2.</strong> Are there AI tools employees use that IT/compliance is unaware of?</div>
+      <div class="q-row-ans ans-fail">✗ Possibly — unsure</div>
+    </div>
+    <div class="q-row-detail part">
+      <div class="q-row-text"><strong>Q4.</strong> Are AI tools used in credit decisioning or fraud detection?</div>
+      <div class="q-row-ans ans-part">~ Yes, informally</div>
+    </div>
+    <div class="q-row-detail fail">
+      <div class="q-row-text"><strong>Q5.</strong> Does a formal AI usage policy exist?</div>
+      <div class="q-row-ans ans-fail">✗ No policy</div>
+    </div>
+    <div class="q-row-detail part">
+      <div class="q-row-text"><strong>Q6.</strong> How often is the AI tool inventory reviewed?</div>
+      <div class="q-row-ans ans-part">~ Ad hoc only</div>
+    </div>
+  </div>
+
+  <!-- Section 2 detail -->
+  <div class="detail-section">
+    <div class="detail-section-header">
+      <div class="detail-section-title">Data Governance &amp; Privacy</div>
+      <span class="risk-pill" style="background:#FCEBEB; color:#A32D2D;">40% · 16/40 pts</span>
+    </div>
+
+    <div class="q-row-detail fail">
+      <div class="q-row-text"><strong>Q7.</strong> Do employees paste customer PII into AI tools?</div>
+      <div class="q-row-ans ans-fail">✗ Yes — uncontrolled</div>
+    </div>
+    <div class="q-row-detail fail">
+      <div class="q-row-text"><strong>Q8.</strong> Do vendor contracts specify no training on company data?</div>
+      <div class="q-row-ans ans-fail">✗ Not reviewed</div>
+    </div>
+    <div class="q-row-detail part">
+      <div class="q-row-text"><strong>Q9.</strong> Is customer data stored on servers outside India?</div>
+      <div class="q-row-ans ans-part">~ Unsure</div>
+    </div>
+    <div class="q-row-detail fail">
+      <div class="q-row-text"><strong>Q10.</strong> Has a DPIA been conducted for AI systems processing personal data?</div>
+      <div class="q-row-ans ans-fail">✗ Not aware of requirement</div>
+    </div>
+    <div class="q-row-detail pass">
+      <div class="q-row-text"><strong>Q11.</strong> Are technical controls in place to prevent PII pasting?</div>
+      <div class="q-row-ans ans-pass">✓ Policy only</div>
+    </div>
+  </div>
+
+  <div style="font-size:10px; color:#aaa; margin-top:8px;">
+    All 32 question responses are captured in the full data export. This page shows a representative sample.
+  </div>
+
+  <div class="page-footer">
+    <span>GOVERN·AI — AI Governance Scorecard</span>
+    <span>Confidential — Internal Use Only</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 5 — ATTESTATION
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-label">Sign-off</div>
+  <div class="page-title">Management Attestation</div>
+  <div class="page-subtitle">To be completed by the Head of GRC or equivalent responsible officer</div>
+
+  <div class="attestation">
+    <h3>Declaration</h3>
+    <p style="font-size:11px; color:#444; line-height:1.7;">
+      I, the undersigned, confirm that the information provided in this AI Governance Audit Readiness Scorecard is accurate and complete to the best of my knowledge.
+      This self-assessment was completed in good faith using the GOVERN·AI assessment framework mapped to RBI IT Governance Circular 2023,
+      EU AI Act (Regulation 2024/1689), and India DPDP Act 2023.
+    </p>
+    <p style="font-size:11px; color:#444; margin-top:10px; line-height:1.7;">
+      I acknowledge that this report is an internal self-assessment tool and does not constitute a formal regulatory audit.
+      The identified gaps and action items will be tracked through the company's risk management framework.
+    </p>
+
+    <div class="sig-row">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">Name &amp; Signature</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">Designation</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">Date</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Regulatory reference block -->
+  <h3 style="font-size:12px; font-weight:700; margin-bottom:10px; color:#222;">Regulatory framework reference</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:10px;">
+    <thead>
+      <tr style="background:#f7f7f5;">
+        <th style="padding:6px 10px; text-align:left; color:#777; border-bottom:1px solid #e0e0da;">Framework</th>
+        <th style="padding:6px 10px; text-align:left; color:#777; border-bottom:1px solid #e0e0da;">Jurisdiction</th>
+        <th style="padding:6px 10px; text-align:left; color:#777; border-bottom:1px solid #e0e0da;">Key references used</th>
+        <th style="padding:6px 10px; text-align:left; color:#777; border-bottom:1px solid #e0e0da;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea; font-weight:600;">RBI IT Governance &amp; Risk</td>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea; color:#555;">India</td>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea; color:#555;">IT Circular 2023, ML Model Risk Guidance, IS Policy, Data Localisation</td>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea;"><span class="reg-tag reg-rbi">Active</span></td>
+      </tr>
+      <tr>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea; font-weight:600;">EU AI Act</td>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea; color:#555;">European Union</td>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea; color:#555;">Art. 4, 6, 9, 10, 11, 12, 13, 14, 19, 25, 26, 50, 53, 62, 73</td>
+        <td style="padding:8px 10px; border-bottom:1px solid #f0f0ea;"><span class="reg-tag reg-eu">Enforcement 2025–26</span></td>
+      </tr>
+      <tr>
+        <td style="padding:8px 10px; font-weight:600;">India DPDP Act 2023</td>
+        <td style="padding:8px 10px; color:#555;">India</td>
+        <td style="padding:8px 10px; color:#555;">S.4 (lawful processing), S.8 (data fiduciary), S.10 (DPIA), S.12 (rights), S.16 (cross-border)</td>
+        <td style="padding:8px 10px;"><span class="reg-tag reg-dpdp">Active — rules pending</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:24px; padding:12px 14px; background:#f7f7f5; border-radius:4px; font-size:10px; color:#777; line-height:1.6;">
+    <strong style="color:#444;">About this assessment:</strong> This scorecard was generated by GOVERN·AI, an AI governance self-assessment tool designed for Indian regulated businesses.
+    It covers 32 questions across 7 domains, weighted by regulatory criticality (max 200 points).
+    It is recommended to repeat this assessment quarterly and after any significant change to your AI tool landscape.
+  </div>
+
+  <div class="page-footer">
+    <span>GOVERN·AI — AI Governance Scorecard</span>
+    <span>Confidential — Internal Use Only</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+</body>
+</html>

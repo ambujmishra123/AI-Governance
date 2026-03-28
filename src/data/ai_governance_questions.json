@@ -1,0 +1,567 @@
+{
+  "meta": {
+    "title": "AI Governance Audit Readiness Scorecard",
+    "version": "1.0",
+    "totalQuestions": 32,
+    "maxScore": 200,
+    "frameworks": ["RBI", "EU AI Act", "DPDP Act 2023"],
+    "scoreBands": [
+      { "min": 160, "max": 200, "label": "Compliant", "color": "#1D9E75", "headline": "Your organisation demonstrates strong AI governance maturity" },
+      { "min": 120, "max": 159, "label": "Partially Compliant", "color": "#EF9F27", "headline": "Governance foundations exist — critical gaps need remediation" },
+      { "min": 80,  "max": 119, "label": "Emerging", "color": "#E85D24", "headline": "Significant AI governance gaps identified — immediate action needed" },
+      { "min": 0,   "max": 79,  "label": "At Risk", "color": "#E24B4A", "headline": "Organisation is exposed to material regulatory and operational AI risk" }
+    ]
+  },
+  "sections": [
+    {
+      "id": "inventory",
+      "title": "AI Inventory & Discovery",
+      "description": "Tracks whether the company knows which AI tools are in use, including shadow AI",
+      "questions": [
+        {
+          "id": "Q1",
+          "num": 1,
+          "text": "Does your company maintain a documented register of all AI tools in use — including free, trial, and employee-initiated tools (e.g. ChatGPT, Copilot, Gemini)?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, formal register maintained", "score": 10 },
+            { "label": "In progress / partial", "score": 5 },
+            { "label": "No", "score": 0 }
+          ],
+          "tags": ["RBI IT Governance 2023", "EU AI Act Art. 53"],
+          "risk": "high",
+          "weight": 10,
+          "reverseScored": false,
+          "guidance": "A complete AI tool inventory is the foundation of all governance. Without it, compliance is impossible to demonstrate."
+        },
+        {
+          "id": "Q2",
+          "num": 2,
+          "text": "Are there AI tools being used by employees that IT or compliance is NOT aware of (shadow AI)?",
+          "type": "single_choice",
+          "reverseScored": true,
+          "options": [
+            { "label": "No — we have full visibility", "score": 10 },
+            { "label": "Possibly, we are not sure", "score": 3 },
+            { "label": "Yes — we know shadow AI exists", "score": 0 }
+          ],
+          "tags": ["RBI Circular on Digital Risk", "EU AI Act Art. 26"],
+          "risk": "high",
+          "weight": 10,
+          "guidance": "Shadow AI is the #1 risk flag in regulatory inspections. This question is reverse-scored — the 'safer' answer is No."
+        },
+        {
+          "id": "Q3",
+          "num": 3,
+          "text": "Which departments use AI tools most heavily? (Select all that apply)",
+          "type": "multi_choice",
+          "options": [
+            { "label": "Finance / Credit", "riskFlag": true },
+            { "label": "Operations", "riskFlag": false },
+            { "label": "Customer Support", "riskFlag": false },
+            { "label": "Product / Engineering", "riskFlag": false },
+            { "label": "HR", "riskFlag": true },
+            { "label": "Legal / Compliance", "riskFlag": true },
+            { "label": "All departments", "riskFlag": true }
+          ],
+          "tags": ["EU AI Act Art. 26", "RBI Model Risk"],
+          "risk": "med",
+          "weight": 5,
+          "scoring": "informational — flags high-risk departments for section breakdown",
+          "guidance": "Finance, HR, and Legal AI use triggers high-risk classification under EU AI Act Art. 6."
+        },
+        {
+          "id": "Q4",
+          "num": 4,
+          "text": "Are any AI tools used in credit decisioning, fraud detection, or customer risk scoring?",
+          "type": "single_choice",
+          "options": [
+            { "label": "No", "score": 10 },
+            { "label": "Yes, with full documentation and controls", "score": 7 },
+            { "label": "Yes, informally / without formal controls", "score": 0 }
+          ],
+          "tags": ["RBI ML Model Risk 2023", "EU AI Act Art. 6 (High-risk)"],
+          "risk": "high",
+          "weight": 10,
+          "guidance": "Credit and fraud AI is explicitly classified as high-risk under EU AI Act Art. 6 and requires extensive documentation under RBI's ML model risk circular."
+        },
+        {
+          "id": "Q5",
+          "num": 5,
+          "text": "Does your company have a formal policy defining which AI tools are approved for use?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, written and communicated to all staff", "score": 8 },
+            { "label": "Yes, but not widely communicated", "score": 4 },
+            { "label": "In progress", "score": 2 },
+            { "label": "No", "score": 0 }
+          ],
+          "tags": ["RBI IT Policy Framework", "EU AI Act Art. 26(1)"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "A written AI acceptable use policy is a baseline requirement for both RBI IT governance audits and EU AI Act compliance."
+        },
+        {
+          "id": "Q6",
+          "num": 6,
+          "text": "How frequently is the AI tool inventory reviewed or updated?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Monthly or more frequently", "score": 5 },
+            { "label": "Quarterly", "score": 4 },
+            { "label": "Ad hoc / when something changes", "score": 2 },
+            { "label": "Never reviewed", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 9", "RBI Audit Guidelines"],
+          "risk": "med",
+          "weight": 5,
+          "guidance": "AI tool landscapes change fast. Quarterly minimum review is recommended. Never reviewing = automatic audit finding."
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Data Governance & Privacy",
+      "description": "Assesses how customer and company data is handled within AI tools",
+      "questions": [
+        {
+          "id": "Q7",
+          "num": 7,
+          "text": "Do employees paste or upload customer PII (names, phone numbers, Aadhaar, PAN, financial data) into AI tools?",
+          "type": "single_choice",
+          "reverseScored": true,
+          "options": [
+            { "label": "No — controls prevent this", "score": 10 },
+            { "label": "Unsure — no monitoring in place", "score": 2 },
+            { "label": "Yes — this happens", "score": 0 }
+          ],
+          "tags": ["DPDP Act 2023 S.4", "EU AI Act Art. 10", "RBI Data Localisation"],
+          "risk": "high",
+          "weight": 10,
+          "guidance": "Pasting PII into external AI tools (ChatGPT, Gemini etc.) likely violates DPDP Act S.4 and RBI data localisation requirements. This is the most common compliance breach in Indian fintechs today."
+        },
+        {
+          "id": "Q8",
+          "num": 8,
+          "text": "Do your AI vendor agreements include data processing clauses specifying the vendor will NOT train on your company's data?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, explicit clause in all AI vendor contracts", "score": 10 },
+            { "label": "In some contracts, not all", "score": 5 },
+            { "label": "Not reviewed / not sure", "score": 1 },
+            { "label": "No such clause exists", "score": 0 }
+          ],
+          "tags": ["DPDP Act 2023 S.8", "EU AI Act Art. 26(6)", "RBI Vendor Risk"],
+          "risk": "high",
+          "weight": 10,
+          "guidance": "Without an explicit no-training clause, your customer data may be used to improve the vendor's models — a serious breach of DPDP consent requirements."
+        },
+        {
+          "id": "Q9",
+          "num": 9,
+          "text": "Is customer data processed by AI tools stored on servers outside India?",
+          "type": "single_choice",
+          "reverseScored": true,
+          "options": [
+            { "label": "No — all processing stays in India", "score": 8 },
+            { "label": "Unsure", "score": 2 },
+            { "label": "Yes — data goes to overseas servers", "score": 0 }
+          ],
+          "tags": ["DPDP Act 2023 S.16", "RBI Data Localisation Circular"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "RBI's data localisation circular requires payment and customer financial data to be stored in India. Cross-border AI processing without safeguards violates this."
+        },
+        {
+          "id": "Q10",
+          "num": 10,
+          "text": "Has your company conducted a Data Protection Impact Assessment (DPIA) for any AI system that processes personal data?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, for all relevant AI systems", "score": 6 },
+            { "label": "Yes, for some systems", "score": 3 },
+            { "label": "No, but we plan to", "score": 1 },
+            { "label": "Not aware of the requirement", "score": 0 }
+          ],
+          "tags": ["DPDP Act 2023 S.10", "EU AI Act Art. 9(2)"],
+          "risk": "med",
+          "weight": 6,
+          "guidance": "DPIAs are expected under DPDP Act for significant data processing and mandatory under EU AI Act for high-risk systems."
+        },
+        {
+          "id": "Q11",
+          "num": 11,
+          "text": "Are there technical controls (DLP, endpoint policies) that prevent employees from pasting sensitive data into external AI tools?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, technical controls enforced", "score": 6 },
+            { "label": "Partial controls in place", "score": 3 },
+            { "label": "Policy only, no technical enforcement", "score": 1 },
+            { "label": "No controls", "score": 0 }
+          ],
+          "tags": ["RBI IS Policy 2023", "EU AI Act Art. 9(4)"],
+          "risk": "med",
+          "weight": 6,
+          "guidance": "Policy without enforcement is a finding waiting to happen. DLP rules blocking AI site uploads are the gold standard."
+        }
+      ]
+    },
+    {
+      "id": "oversight",
+      "title": "Human Oversight & Accountability",
+      "description": "Evaluates whether humans are meaningfully in control of AI decisions",
+      "questions": [
+        {
+          "id": "Q12",
+          "num": 12,
+          "text": "Is there a named individual or team responsible for AI governance in your company?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, named role with clear mandate", "score": 8 },
+            { "label": "Informally assigned to IT / Compliance", "score": 4 },
+            { "label": "No clear owner", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 26(1)", "RBI IT Governance Framework"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "EU AI Act requires designated human oversight. An unnamed responsibility is no responsibility at all in an audit."
+        },
+        {
+          "id": "Q13",
+          "num": 13,
+          "text": "For AI systems that make or influence decisions (loan approvals, hiring, fraud flags), is there a mandatory human review step before action is taken?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, always — no AI decision is fully automated", "score": 10 },
+            { "label": "For most systems, not all", "score": 5 },
+            { "label": "Depends on the system / case by case", "score": 2 },
+            { "label": "No — AI decisions are acted on directly", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 14", "RBI Model Risk Guidance"],
+          "risk": "high",
+          "weight": 10,
+          "guidance": "Fully automated consequential decisions are prohibited under EU AI Act Art. 14 and against RBI guidance on model risk management."
+        },
+        {
+          "id": "Q14",
+          "num": 14,
+          "text": "Can customers or employees request an explanation for decisions made by AI systems?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, formal explainability process exists", "score": 6 },
+            { "label": "Informally possible but no process", "score": 3 },
+            { "label": "No", "score": 0 },
+            { "label": "Not applicable — no customer-facing AI", "score": 6 }
+          ],
+          "tags": ["DPDP Act 2023 S.12", "EU AI Act Art. 13", "RBI FPC Circular"],
+          "risk": "med",
+          "weight": 6,
+          "guidance": "DPDP Act S.12 gives data principals the right to information about automated decisions. EU AI Act Art. 13 mandates transparency for high-risk systems."
+        },
+        {
+          "id": "Q15",
+          "num": 15,
+          "text": "Are AI model outputs reviewed periodically for accuracy, bias, or performance drift?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, formal monitoring with documented results", "score": 8 },
+            { "label": "Yes, informally monitored", "score": 4 },
+            { "label": "No ongoing monitoring", "score": 0 }
+          ],
+          "tags": ["RBI Model Validation Guidelines", "EU AI Act Art. 9(7)"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "Model drift is a top cause of AI-related financial harm. RBI expects documented model validation cycles. No monitoring = unacceptable risk."
+        },
+        {
+          "id": "Q16",
+          "num": 16,
+          "text": "Does your board or senior leadership receive any reporting on AI risk or AI tool usage?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, regular board-level AI risk reporting", "score": 4 },
+            { "label": "Occasionally / ad hoc", "score": 2 },
+            { "label": "No — leadership is not briefed", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 26", "RBI Corporate Governance Circular"],
+          "risk": "low",
+          "weight": 4,
+          "guidance": "Board awareness of AI risk is increasingly expected in governance frameworks. This is a maturity indicator."
+        }
+      ]
+    },
+    {
+      "id": "training",
+      "title": "Employee Awareness & Training",
+      "description": "Checks whether staff are equipped to use AI safely and responsibly",
+      "questions": [
+        {
+          "id": "Q17",
+          "num": 17,
+          "text": "Have employees received any formal training on responsible AI use (data handling, bias awareness, prompt safety)?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, all employees trained", "score": 6 },
+            { "label": "Some employees / selected roles", "score": 3 },
+            { "label": "Planned but not done", "score": 1 },
+            { "label": "No training provided", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 4", "RBI Staff Awareness Guidelines"],
+          "risk": "med",
+          "weight": 6,
+          "guidance": "EU AI Act Art. 4 explicitly requires AI literacy for staff working with AI systems. Untrained employees are your biggest prompt-risk surface."
+        },
+        {
+          "id": "Q18",
+          "num": 18,
+          "text": "Are employees required to acknowledge an AI usage policy before using company-approved AI tools?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, formal acknowledgement recorded", "score": 5 },
+            { "label": "Policy exists but no formal sign-off", "score": 2 },
+            { "label": "No policy acknowledgement process", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 26", "RBI Policy Acceptance Framework"],
+          "risk": "med",
+          "weight": 5,
+          "guidance": "Unacknowledged policies don't hold up in audits. A digital sign-off trail is a minimal requirement."
+        },
+        {
+          "id": "Q19",
+          "num": 19,
+          "text": "Do employees know which AI tools are approved vs prohibited for work use?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, clearly communicated with a published list", "score": 5 },
+            { "label": "Mostly aware, informal guidance", "score": 2 },
+            { "label": "No clear guidance given", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 26(7)", "RBI IS Policy"],
+          "risk": "med",
+          "weight": 5,
+          "guidance": "If employees don't know what's allowed, they'll use whatever works. Approved tool lists must be published and accessible."
+        },
+        {
+          "id": "Q20",
+          "num": 20,
+          "text": "Is AI literacy training part of new employee onboarding?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes", "score": 3 },
+            { "label": "Planned", "score": 1 },
+            { "label": "No", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 4(1)", "RBI Training Requirements"],
+          "risk": "low",
+          "weight": 3,
+          "guidance": "Embedding AI governance in onboarding is a sign of a mature programme. New hires are the highest prompt-risk group."
+        }
+      ]
+    },
+    {
+      "id": "vendor",
+      "title": "Vendor & Third-party AI Risk",
+      "description": "Examines how third-party AI embedded in SaaS tools is being governed",
+      "questions": [
+        {
+          "id": "Q21",
+          "num": 21,
+          "text": "Has your company reviewed the AI sub-processors used by your SaaS vendors (e.g. does your CRM use OpenAI under the hood)?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, all major vendors reviewed", "score": 8 },
+            { "label": "Some vendors reviewed", "score": 4 },
+            { "label": "Not aware this was required", "score": 0 }
+          ],
+          "tags": ["DPDP Act 2023 S.8(2)", "EU AI Act Art. 25", "RBI Third-party Risk"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "Your Salesforce or Zendesk may be sending customer data to OpenAI. Most companies don't know. DPDP Act makes the data controller liable regardless."
+        },
+        {
+          "id": "Q22",
+          "num": 22,
+          "text": "Do vendor contracts specify what happens to your data if an AI vendor is acquired, shuts down, or changes their data policy?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, exit/change clauses in all contracts", "score": 6 },
+            { "label": "In some contracts", "score": 3 },
+            { "label": "Contracts not reviewed for this", "score": 0 }
+          ],
+          "tags": ["RBI Vendor Exit Clause Requirement", "DPDP Act 2023 S.8"],
+          "risk": "med",
+          "weight": 6,
+          "guidance": "AI vendors are acquired and pivoted constantly. Without exit clauses, you have no data rights if the vendor changes hands."
+        },
+        {
+          "id": "Q23",
+          "num": 23,
+          "text": "Are AI vendors used by your company SOC 2 Type II certified or equivalent?",
+          "type": "single_choice",
+          "options": [
+            { "label": "All major vendors are certified", "score": 5 },
+            { "label": "Some are certified", "score": 3 },
+            { "label": "None are certified / unsure", "score": 0 }
+          ],
+          "tags": ["RBI IS Audit Standards", "EU AI Act Art. 25(2)"],
+          "risk": "med",
+          "weight": 5,
+          "guidance": "SOC 2 Type II is the baseline security certification for SaaS vendors. Using uncertified AI vendors is an audit finding."
+        },
+        {
+          "id": "Q24",
+          "num": 24,
+          "text": "Is there a process to evaluate new AI tools before employees are permitted to use them?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, formal approval process with documented criteria", "score": 7 },
+            { "label": "Informal approval through IT / Manager", "score": 3 },
+            { "label": "No process — employees can use any tool", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 9", "RBI Procurement Policy"],
+          "risk": "high",
+          "weight": 7,
+          "guidance": "Without a tool approval process, shadow AI is inevitable. This is the preventative control that stops Q2 from being a problem."
+        }
+      ]
+    },
+    {
+      "id": "incident",
+      "title": "Incident & Risk Management",
+      "description": "Assesses readiness to detect, respond to, and report AI-related incidents",
+      "questions": [
+        {
+          "id": "Q25",
+          "num": 25,
+          "text": "Has your company experienced any AI-related incident in the last 12 months (data leak via prompt, biased output, model failure, vendor breach)?",
+          "type": "single_choice",
+          "reverseScored": true,
+          "options": [
+            { "label": "No incidents", "score": 8 },
+            { "label": "Minor incidents, handled informally", "score": 4 },
+            { "label": "Yes, significant incident occurred", "score": 0 }
+          ],
+          "tags": ["RBI Incident Reporting Guidelines", "EU AI Act Art. 73"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "Prior incidents must be documented and reported. Undisclosed significant incidents are a regulatory liability."
+        },
+        {
+          "id": "Q26",
+          "num": 26,
+          "text": "Is there a defined process for reporting and escalating AI-related incidents?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, documented with escalation paths and timelines", "score": 8 },
+            { "label": "Informal process only", "score": 3 },
+            { "label": "No process exists", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 73", "RBI IS Incident Management"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "EU AI Act requires serious incident reporting within 15 days. Without a process, you'll miss this deadline and compound the problem."
+        },
+        {
+          "id": "Q27",
+          "num": 27,
+          "text": "Does your company have a documented AI risk register?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, standalone AI risk register", "score": 6 },
+            { "label": "AI risks captured in general IT risk register", "score": 3 },
+            { "label": "No risk register", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 9", "RBI IT Risk Framework"],
+          "risk": "med",
+          "weight": 6,
+          "guidance": "AI risks have characteristics distinct from general IT risks (bias, opacity, emergent behaviour). A standalone register demonstrates maturity."
+        },
+        {
+          "id": "Q28",
+          "num": 28,
+          "text": "Is AI risk assessed as part of your annual internal audit or external audit cycle?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, AI explicitly scoped into audits", "score": 5 },
+            { "label": "Informally discussed but not formally scoped", "score": 2 },
+            { "label": "AI not on the audit agenda", "score": 0 }
+          ],
+          "tags": ["RBI Audit Scope Guidelines", "EU AI Act Art. 62"],
+          "risk": "med",
+          "weight": 5,
+          "guidance": "Regulators are beginning to expect AI to appear in audit scopes. Being ahead of this is a credibility signal."
+        }
+      ]
+    },
+    {
+      "id": "transparency",
+      "title": "Transparency & Explainability",
+      "description": "Tests whether the company can demonstrate AI governance to regulators, auditors, and customers",
+      "questions": [
+        {
+          "id": "Q29",
+          "num": 29,
+          "text": "If asked by a regulator today to produce an AI usage report — which tools, which data, which decisions — how long would it take your team?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Less than 1 business day", "score": 10 },
+            { "label": "Within 1 week", "score": 5 },
+            { "label": "More than 1 week", "score": 1 },
+            { "label": "We could not produce one", "score": 0 }
+          ],
+          "tags": ["RBI Supervisory Inspection", "EU AI Act Art. 19"],
+          "risk": "high",
+          "weight": 10,
+          "guidance": "This is the single most important question. Everything else in this scorecard is infrastructure for answering 'yes, less than a day.'"
+        },
+        {
+          "id": "Q30",
+          "num": 30,
+          "text": "Does your company disclose to customers when AI is used to make decisions that affect them?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, clear disclosure in all relevant customer journeys", "score": 8 },
+            { "label": "For some systems only", "score": 4 },
+            { "label": "No disclosure made", "score": 0 },
+            { "label": "We do not use AI in customer-facing decisions", "score": 8 }
+          ],
+          "tags": ["EU AI Act Art. 50", "DPDP Act 2023 S.12", "RBI FPC Charter"],
+          "risk": "high",
+          "weight": 8,
+          "guidance": "Non-disclosure of AI use in financial decisions violates RBI's Fair Practice Code and EU AI Act Art. 50. Customer trust and regulatory standing both depend on this."
+        },
+        {
+          "id": "Q31",
+          "num": 31,
+          "text": "Are AI model cards or system documentation maintained for internally built or fine-tuned AI models?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, full documentation maintained", "score": 5 },
+            { "label": "Partial documentation", "score": 2 },
+            { "label": "No documentation", "score": 0 },
+            { "label": "We do not build or fine-tune models", "score": 5 }
+          ],
+          "tags": ["EU AI Act Art. 11", "RBI Model Documentation Standards"],
+          "risk": "med",
+          "weight": 5,
+          "guidance": "Model cards capture purpose, training data, performance metrics, and known limitations. Required for EU AI Act high-risk systems."
+        },
+        {
+          "id": "Q32",
+          "num": 32,
+          "text": "Can your company demonstrate to an auditor that AI outputs are logged and traceable?",
+          "type": "single_choice",
+          "options": [
+            { "label": "Yes, logs maintained with timestamps and decision context", "score": 9 },
+            { "label": "For some systems", "score": 4 },
+            { "label": "No logging in place", "score": 0 }
+          ],
+          "tags": ["EU AI Act Art. 12", "RBI Audit Trail Requirements"],
+          "risk": "high",
+          "weight": 9,
+          "guidance": "Audit trail for AI decisions is mandatory under EU AI Act Art. 12 and expected under RBI's IT audit guidelines. No logs = no defence."
+        }
+      ]
+    }
+  ]
+}
